@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server Created – bighosting</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/animations.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="card success" style="display: block">
+            <div class="big-emoji">🎉✅🎉</div>
+            <h2>🎊 SERVER CREATED! 🎊</h2>
+            <div id="serverDetails" class="server-credentials">
+                <p><strong>🔑 Username:</strong> <span id="srvUser">-</span></p>
+                <p><strong>🔒 Password:</strong> <span id="srvPass">-</span></p>
+                <p><strong>🌐 Panel:</strong> <span id="srvPanel">-</span></p>
+                <a id="srvLink" href="#" target="_blank" class="btn-panel">🔗 Open Server Panel</a>
+            </div>
+            <p class="large-text">Thank you for choosing <span class="highlight">bighosting</span>! 🙏</p>
+            <button class="btn-return" onclick="window.location.href='/'">🔄 Buy Another Server</button>
+        </div>
+    </div>
+    <script>
+        // Parse URL params to display credentials
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('srvUser').textContent = params.get('username') || 'N/A';
+        document.getElementById('srvPass').textContent = params.get('password') || 'N/A';
+        document.getElementById('srvPanel').textContent = params.get('panel') || 'N/A';
+        document.getElementById('srvLink').href = params.get('panel') || '#';
+    </script>
+</body>
+</html>
