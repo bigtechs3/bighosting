@@ -1,4 +1,4 @@
-// ─── MATRIX RAIN (Deep Blue / Grey / Red) ───
+// ─── NEON MATRIX RAIN (Black background, Grey/Black/Red) ───
 const matrixCanvas = document.getElementById('matrixCanvas');
 const mctx = matrixCanvas.getContext('2d');
 
@@ -22,7 +22,8 @@ resizeMatrix();
 window.addEventListener('resize', resizeMatrix);
 
 function drawMatrix() {
-    mctx.fillStyle = 'rgba(10, 10, 15, 0.04)';
+    // Black background with slight trail
+    mctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
     mctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
 
     mctx.font = `${fontSize}px 'Courier New', monospace`;
@@ -33,31 +34,32 @@ function drawMatrix() {
         const x = i * fontSize + fontSize / 2;
         const y = drops[i] * fontSize + fontSize / 2;
 
-        // Mix of deep blue, grey, and occasional red
+        // Colors: Grey, Black (almost dark), Red accents
         const rand = Math.random();
         let r, g, b;
         if (rand < 0.05) {
             // Red accent
             r = 200 + Math.random() * 55;
-            g = 30 + Math.random() * 30;
-            b = 30 + Math.random() * 30;
-        } else if (rand < 0.4) {
-            // Deep blue
-            r = 20 + Math.random() * 40;
-            g = 60 + Math.random() * 60;
-            b = 120 + Math.random() * 80;
+            g = 20 + Math.random() * 20;
+            b = 20 + Math.random() * 20;
+        } else if (rand < 0.3) {
+            // Dark grey / almost black
+            const dark = 30 + Math.random() * 40;
+            r = dark;
+            g = dark;
+            b = dark + 10;
         } else {
             // Grey
-            const grey = 120 + Math.random() * 80;
+            const grey = 100 + Math.random() * 100;
             r = grey;
             g = grey - 10;
             b = grey - 20;
         }
 
-        const brightness = 0.6 + Math.random() * 0.4;
-        mctx.shadowColor = `rgba(26, 82, 118, ${0.3 * brightness})`;
-        mctx.shadowBlur = 15;
-        mctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.7 + 0.3 * brightness})`;
+        const brightness = 0.5 + Math.random() * 0.5;
+        mctx.shadowColor = `rgba(100, 100, 100, ${0.2 * brightness})`;
+        mctx.shadowBlur = 10;
+        mctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.6 + 0.4 * brightness})`;
         mctx.fillText(char, x, y);
         mctx.shadowBlur = 0;
 
