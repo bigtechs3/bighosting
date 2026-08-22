@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bighosting – Loading</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/matrix.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body>
+
+    <!-- Matrix Background -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="container">
+        <div class="loading-card">
+            <h2>INITIALIZING SYSTEM</h2>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <p id="loadingText" class="loading-text">Starting up...</p>
+        </div>
+    </div>
+
+    <audio id="clickSound" src="/assets/audio/click.mp3" preload="auto"></audio>
+    <script src="/js/matrix.js"></script>
+    <script>
+        let progress = 0;
+        const messages = [
+            'Starting up...',
+            'Connecting to servers...',
+            'Loading packages...',
+            'Preparing environment...',
+            'Almost ready...',
+            'Welcome to bighosting!'
+        ];
+
+        const interval = setInterval(() => {
+            progress += 2;
+            if (progress > 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    try {
+                        document.getElementById('clickSound').play().catch(() => {});
+                    } catch(e) {}
+                    window.location.href = '/welcome.html';
+                }, 500);
+                return;
+            }
+            document.getElementById('progressFill').style.width = progress + '%';
+            const idx = Math.min(Math.floor(progress / 17), messages.length - 1);
+            document.getElementById('loadingText').textContent = messages[idx];
+        }, 60);
+    </script>
+</body>
+</html>
