@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Matrix Background -->
     <canvas id="matrixCanvas"></canvas>
 
     <div class="container">
@@ -28,17 +27,12 @@
     <audio id="successSound" src="/assets/audio/success.mp3" preload="auto"></audio>
     <script src="/js/matrix.js"></script>
     <script>
-        // Play success sound on welcome
         setTimeout(() => {
-            try {
-                document.getElementById('successSound').play().catch(() => {});
-            } catch(e) {}
+            try { document.getElementById('successSound').play().catch(() => {}); } catch(e) {}
         }, 300);
 
         function goToPlans() {
-            try {
-                document.getElementById('clickSound').play().catch(() => {});
-            } catch(e) {}
+            try { document.getElementById('clickSound').play().catch(() => {}); } catch(e) {}
             window.location.href = '/plans.html';
         }
     </script>
