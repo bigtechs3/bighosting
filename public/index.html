@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bighosting – Pterodactyl Servers</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/animations.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body>
+
+    <!-- ─── Matrix Rain Background ─── -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="container">
+        <!-- ─── Header ─── -->
+        <header class="header">
+            <h1>⫸ bighosting ⫷</h1>
+            <p class="tagline">Pterodactyl Servers · Powered by <span class="highlight">BIGST4CK</span></p>
+        </header>
+
+        <!-- ─── Plans Section ─── -->
+        <section class="plans" id="plansSection">
+            <h2>📦 Choose Your Server Plan</h2>
+            <div class="plan-grid" id="planGrid"></div>
+        </section>
+
+        <!-- ─── Order Form ─── -->
+        <div class="card" id="orderForm">
+            <h2>📱 Order Server</h2>
+            <p class="subtext">You'll receive a USSD prompt on your phone to complete payment.</p>
+
+            <form id="purchaseForm">
+                <div class="form-group">
+                    <label for="phone">📞 Phone Number</label>
+                    <input type="tel" id="phone" placeholder="e.g., 255XXXXXXXXX" required />
+                </div>
+                <div class="form-group">
+                    <label for="plan">📦 Server Plan</label>
+                    <select id="plan" required>
+                        <option value="">Select a plan...</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-buy">⚡ Purchase Server</button>
+            </form>
+
+            <div class="footer-info">
+                <p>📌 After payment, you'll receive login credentials and panel link.</p>
+            </div>
+        </div>
+
+        <!-- ─── Processing ─── -->
+        <div id="processing" class="card processing-card" style="display: none">
+            <div class="loader"></div>
+            <h2>⏳ Processing...</h2>
+            <p>Please check your phone for the USSD prompt.</p>
+            <p class="subtext">Authorize the payment to create your server.</p>
+        </div>
+
+        <!-- ─── Success ─── -->
+        <div id="success" class="card success" style="display: none">
+            <div class="big-emoji">🎉✅🎉</div>
+            <h2>🎊 SERVER CREATED! 🎊</h2>
+            <div id="serverDetails" class="server-credentials">
+                <p><strong>🔑 Username:</strong> <span id="srvUser">-</span></p>
+                <p><strong>🔒 Password:</strong> <span id="srvPass">-</span></p>
+                <p><strong>🌐 Panel:</strong> <span id="srvPanel">-</span></p>
+                <a id="srvLink" href="#" target="_blank" class="btn-panel">🔗 Open Server Panel</a>
+            </div>
+            <p class="large-text">Thank you for choosing <span class="highlight">bighosting</span>! 🙏</p>
+            <div class="shapes">
+                <span class="shape">@</span><span class="shape">#</span><span class="shape">$</span>
+                <span class="shape">&</span><span class="shape">£</span><span class="shape">¢</span>
+                <span class="shape">€</span><span class="shape">¥</span><span class="shape">π</span>
+                <span class="shape">×</span><span class="shape">∆</span><span class="shape">✓</span>
+                <span class="shape">°</span><span class="shape">^</span><span class="shape">~</span>
+                <span class="shape">+</span><span class="shape">{</span><span class="shape">$</span>
+                <span class="shape">$</span><span class="shape">:</span><span class="shape">#</span>
+                <span class="shape">+</span><span class="shape">#</span><span class="shape">&</span>
+                <span class="shape">$</span><span class="shape">#</span><span class="shape">(</span>
+                <span class="shape">✓</span><span class="shape">¢</span><span class="shape">=</span>
+                <span class="shape">%</span>
+            </div>
+            <div class="big-brand"><h1>bighosting</h1></div>
+            <button class="btn-return" onclick="resetPurchase()">🔄 Buy Another Server</button>
+        </div>
+    </div>
+
+    <!-- ─── Audio ─── -->
+    <audio id="clickSound" src="/assets/audio/click.mp3" preload="auto"></audio>
+    <audio id="successSound" src="/assets/audio/success.mp3" preload="auto"></audio>
+
+    <script src="/js/matrix.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
