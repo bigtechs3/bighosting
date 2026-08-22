@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: bighosting
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: SONICPESA_API_KEY
+        sync: false
+      - key: PTERO_API_KEY
+        sync: false
+      - key: PTERO_PANEL
+        sync: false
+      - key: PTERO_EGG
+        value: "1"
+      - key: PTERO_LOCATION
+        value: "1"
+      - key: PTERO_NEST
+        value: "5"
+      - key: PORT
+        value: "3000"
