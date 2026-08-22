@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Matrix Background -->
     <canvas id="matrixCanvas"></canvas>
 
     <div class="container">
@@ -18,7 +17,6 @@
             <div class="big-icon">⫸✅⫷</div>
             <h2>SERVER CREATED</h2>
 
-            <!-- ─── Credentials Revealed Here ─── -->
             <div class="server-credentials">
                 <p><strong>USERNAME:</strong> <span id="srvUser">-</span></p>
                 <p><strong>PASSWORD:</strong> <span id="srvPass" style="color: #e74c3c; font-weight: bold;">-</span></p>
@@ -52,22 +50,13 @@
     <audio id="clickSound" src="/assets/audio/click.mp3" preload="auto"></audio>
     <script src="/js/matrix.js"></script>
     <script>
-        // ─── Load credentials from localStorage ───
-        const username = localStorage.getItem('serverUsername') || 'N/A';
-        const password = localStorage.getItem('serverPassword') || 'N/A';
-        const email = localStorage.getItem('serverEmail') || 'N/A';
-        const panel = localStorage.getItem('serverPanel') || 'N/A';
-        const serverId = localStorage.getItem('serverId') || 'N/A';
-        const totalServers = localStorage.getItem('totalServers') || '1';
+        document.getElementById('srvUser').textContent = localStorage.getItem('serverUsername') || 'N/A';
+        document.getElementById('srvPass').textContent = localStorage.getItem('serverPassword') || 'N/A';
+        document.getElementById('srvEmail').textContent = localStorage.getItem('serverEmail') || 'N/A';
+        document.getElementById('srvPanel').textContent = localStorage.getItem('serverPanel') || 'N/A';
+        document.getElementById('srvTotal').textContent = localStorage.getItem('totalServers') || '1';
+        document.getElementById('srvLink').href = localStorage.getItem('serverPanel') || '#';
 
-        document.getElementById('srvUser').textContent = username;
-        document.getElementById('srvPass').textContent = password;
-        document.getElementById('srvEmail').textContent = email;
-        document.getElementById('srvPanel').textContent = panel;
-        document.getElementById('srvTotal').textContent = totalServers;
-        document.getElementById('srvLink').href = panel;
-
-        // ─── Confetti ───
         function launchConfetti() {
             const colors = ['#e74c3c', '#1a5276', '#2e86c1', '#888', '#c0392b', '#154360', '#FFD700', '#C0C0C0'];
             for (let i = 0; i < 120; i++) {
@@ -80,17 +69,12 @@
                 piece.style.animationDuration = Math.random() * 3 + 2 + 's';
                 piece.style.animationDelay = Math.random() * 2 + 's';
                 piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                piece.style.position = 'fixed';
-                piece.style.top = '-10px';
-                piece.style.zIndex = '9999';
-                piece.style.pointerEvents = 'none';
                 document.body.appendChild(piece);
                 setTimeout(() => piece.remove(), 5000);
             }
         }
         launchConfetti();
 
-        // ─── Reset ───
         function resetPurchase() {
             localStorage.clear();
             window.location.href = '/';
