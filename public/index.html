@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Matrix Background -->
     <canvas id="matrixCanvas"></canvas>
 
     <div class="container">
@@ -27,9 +26,7 @@
     <script src="/js/matrix.js"></script>
     <script>
         function goToLoading() {
-            try {
-                document.getElementById('clickSound').play().catch(() => {});
-            } catch(e) {}
+            try { document.getElementById('clickSound').play().catch(() => {}); } catch(e) {}
             window.location.href = '/loading.html';
         }
     </script>
