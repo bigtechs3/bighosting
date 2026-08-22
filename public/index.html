@@ -13,7 +13,9 @@
     <!-- ─── Matrix Rain Background ─── -->
     <canvas id="matrixCanvas"></canvas>
 
+    <!-- ─── Main Container ─── -->
     <div class="container">
+
         <!-- ─── Header ─── -->
         <header class="header">
             <h1>⫸ bighosting ⫷</h1>
@@ -86,14 +88,23 @@
             <div class="big-brand"><h1>bighosting</h1></div>
             <button class="btn-return" onclick="resetPurchase()">🔄 Buy Another Server</button>
         </div>
+
+        <!-- ─── Footer ─── -->
+        <footer class="footer" style="text-align: center; margin-top: 30px; padding: 20px; border-top: 1px solid #1a2a3a;">
+            <p style="color: #555; font-size: 0.8rem;">© 2026 bighosting · Powered by BIGST4CK</p>
+            <p style="color: #444; font-size: 0.7rem;">Your server, your rules.</p>
+        </footer>
     </div>
 
-    <!-- ─── Audio ─── -->
-    <audio id="clickSound" src="/assets/audio/click.mp3" preload="auto"></audio>
+    <!-- ─── Audio Elements ─── -->
+    <audio id="bgMusic" src="/assets/audio/background.mp3" preload="auto" loop></audio>
     <audio id="successSound" src="/assets/audio/success.mp3" preload="auto"></audio>
+    <audio id="clickSound" src="/assets/audio/click.mp3" preload="auto"></audio>
 
+    <!-- ─── JavaScript ─── -->
     <script src="/js/matrix.js"></script>
     <script src="/js/audio.js"></script>
     <script src="/js/script.js"></script>
+
 </body>
 </html>
