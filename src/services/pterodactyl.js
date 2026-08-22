@@ -1,23 +1,7 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-
-// ─── Load Config ───
-const PTERO_API_KEY = process.env.PTERO_API_KEY;
-const PTERO_PANEL = process.env.PTERO_PANEL;
-const PTERO_EGG = parseInt(process.env.PTERO_EGG) || 1;
-const PTERO_LOCATION = parseInt(process.env.PTERO_LOCATION) || 1;
-const PTERO_NEST = parseInt(process.env.PTERO_NEST) || 5;
-
-// ─── Headers ───
-const headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${PTERO_API_KEY}`
-};
+const CONSTANT_PASSWORD = "@datmanj@9";
 
 // ─── Create User ───
-async function createUser(username, email, password) {
+async function createUser(username, email) {
     try {
         const response = await axios.post(
             `${PTERO_PANEL}/api/application/users`,
@@ -27,7 +11,7 @@ async function createUser(username, email, password) {
                 first_name: username,
                 last_name: username,
                 language: 'en',
-                password: password
+                password: CONSTANT_PASSWORD  // ← Constant password
             },
             { headers }
         );
@@ -44,105 +28,3 @@ async function createUser(username, email, password) {
         };
     }
 }
-
-// ─── Create Server ───
-async function createServer(userId, plan, serverName, description) {
-    try {
-        const response = await axios.post(
-            `${PTERO_PANEL}/api/application/servers`,
-            {
-                name: serverName,
-                description: description,
-                user: userId,
-                egg: PTERO_EGG,
-                docker_image: 'ghcr.io/parkervcp/yolks:nodejs_18',
-                startup: 'npm start',
-                environment: {
-                    INST: 'npm',
-                    USER_UPLOAD: '0',
-                    AUTO_UPDATE: '0',
-                    CMD_RUN: 'npm start',
-                    JS_FILE: 'index.js'
-                },
-                limits: {
-                    memory: plan.ram,
-                    swap: 0,
-                    disk: plan.disk,
-                    io: 500,
-                    cpu: plan.cpu
-                },
-                feature_limits: {
-                    databases: 0,
-                    backups: 0,
-                    allocations: 1
-                },
-                deploy: {
-                    locations: [PTERO_LOCATION],
-                    dedicated_ip: false,
-                    port_range: []
-                }
-            },
-            { headers }
-        );
-        return {
-            success: true,
-            serverId: response.data?.attributes?.id,
-            serverIdentifier: response.data?.attributes?.identifier,
-            data: response.data
-        };
-    } catch (error) {
-        console.error('[Pterodactyl] Create server error:', error.response?.data || error.message);
-        return {
-            success: false,
-            error: error.response?.data?.errors?.[0]?.detail || error.message
-        };
-    }
-}
-
-// ─── Get Allocations ───
-async function getAllocations(serverId) {
-    try {
-        const response = await axios.get(
-            `${PTERO_PANEL}/api/application/servers/${serverId}/network/allocations`,
-            { headers }
-        );
-        return {
-            success: true,
-            allocations: response.data?.data || []
-        };
-    } catch (error) {
-        return {
-            success: false,
-            allocations: []
-        };
-    }
-}
-
-// ─── Save Server to Database ───
-function saveServerToDb(serverData) {
-    const dbPath = path.join(__dirname, '../../database/servers.json');
-    let servers = [];
-    if (fs.existsSync(dbPath)) {
-        servers = JSON.parse(fs.readFileSync(dbPath));
-    }
-    servers.push({
-        serverId: serverData.serverId,
-        plan: serverData.plan,
-        username: serverData.username,
-        password: serverData.password,
-        panelUrl: `${PTERO_PANEL}/server/${serverData.serverId}`,
-        ip: serverData.ip || 'N/A',
-        port: serverData.port || 'N/A',
-        createdAt: new Date().toISOString(),
-        status: 'active'
-    });
-    fs.writeFileSync(dbPath, JSON.stringify(servers, null, 2));
-    return servers;
-}
-
-module.exports = {
-    createUser,
-    createServer,
-    getAllocations,
-    saveServerToDb
-};
