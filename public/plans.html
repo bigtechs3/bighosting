@@ -7,29 +7,178 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/matrix.css" />
     <link rel="stylesheet" href="/css/responsive.css" />
+    <style>
+        /* ─── Floating WhatsApp Button ─── */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 9999;
+            background: #25D366;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        /* ─── Your Server Section ─── */
+        .your-server-card {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #2e86c1;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 520px;
+        }
+        .your-server-card h2 {
+            color: #2e86c1;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #1a2a3a;
+            padding-bottom: 10px;
+        }
+        .your-server-card .no-server {
+            color: #666666;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .server-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+        }
+        .server-item p {
+            margin: 3px 0;
+            font-size: 0.85rem;
+            color: #aaaaaa;
+        }
+        .server-item strong {
+            color: #cccccc;
+        }
+        .server-item .server-status {
+            color: #4DD0E1;
+            font-weight: bold;
+        }
+
+        /* ─── Scrollable Plans ─── */
+        .plans-scroll {
+            max-height: 65vh;
+            overflow-y: auto;
+            padding-right: 8px;
+            width: 100%;
+            max-width: 520px;
+        }
+        .plans-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .plans-scroll::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        .plans-scroll::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 10px;
+        }
+
+        /* ─── Adjustments ─── */
+        .plans-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .plans-wrapper .header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .plans-wrapper .header h1 {
+            font-size: 2rem;
+            letter-spacing: 6px;
+        }
+
+        @media (max-width: 480px) {
+            .whatsapp-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                bottom: 15px;
+                left: 15px;
+            }
+            .your-server-card {
+                padding: 15px 16px;
+            }
+        }
+    </style>
 </head>
 <body>
 
+    <!-- ─── Matrix Background ─── -->
     <canvas id="matrixCanvas"></canvas>
 
-    <div class="container">
-        <header class="header">
-            <h1>bighosting</h1>
-            <p class="tagline">Select Your Server Plan</p>
-        </header>
+    <!-- ─── Floating WhatsApp Button ─── -->
+    <a href="https://chat.whatsapp.com/FxEYZl2UyzAEI2yhaH34Ye" target="_blank" class="whatsapp-btn" title="Join our WhatsApp group">
+        💬
+    </a>
 
-        <div class="card">
-            <div class="plan-grid" id="planGrid"></div>
-            <div class="footer-info">
+    <div class="container">
+        <div class="plans-wrapper">
+
+            <!-- ─── Header ─── -->
+            <header class="header">
+                <h1>bighosting</h1>
+                <p class="tagline">Select Your Server Plan</p>
+            </header>
+
+            <!-- ─── YOUR SERVER SECTION ─── -->
+            <div class="your-server-card" id="yourServerCard">
+                <h2>◈ YOUR SERVER</h2>
+                <div id="serverList">
+                    <p class="no-server">No servers found. Purchase a plan below.</p>
+                </div>
+            </div>
+
+            <!-- ─── SCROLLABLE PLANS ─── -->
+            <div class="plans-scroll" id="plansScroll">
+                <div class="plan-grid" id="planGrid"></div>
+            </div>
+
+            <div class="footer-info" style="width: 100%; max-width: 520px; text-align: center; margin-top: 15px;">
                 <p>Click a plan to select it, then proceed to payment.</p>
                 <p>Password will be revealed after purchase.</p>
             </div>
+
         </div>
     </div>
 
+    <!-- ─── Audio ─── -->
     <audio id="clickSound" src="/assets/audio/click.mp3" preload="auto"></audio>
+    <audio id="successSound" src="/assets/audio/success.mp3" preload="auto"></audio>
+
     <script src="/js/matrix.js"></script>
     <script>
+        // ─── Plan Data ───
         const plans = [
             { id: 1, name: "2 GB", price: 1500, ram: "2GB", disk: "20GB", cpu: "100%", color: "#90A4AE", medal: "" },
             { id: 2, name: "3 GB", price: 3000, ram: "3GB", disk: "30GB", cpu: "150%", color: "#78909C", medal: "" },
@@ -45,6 +194,7 @@
 
         let selectedPlanId = null;
 
+        // ─── Render Plans ───
         function renderPlans() {
             const grid = document.getElementById('planGrid');
             plans.forEach(p => {
@@ -65,6 +215,7 @@
             });
         }
 
+        // ─── Select Plan ───
         function selectPlan(id) {
             selectedPlanId = id;
             document.querySelectorAll('.plan-card').forEach(el => {
@@ -75,7 +226,52 @@
             setTimeout(() => { window.location.href = '/payment.html'; }, 400);
         }
 
+        // ─── Load User's Servers ───
+        function loadUserServers() {
+            const phone = localStorage.getItem('userPhone');
+            if (!phone) {
+                document.getElementById('serverList').innerHTML = '<p class="no-server">No servers found. Purchase a plan below.</p>';
+                return;
+            }
+
+            fetch(`/api/user-servers?phone=${phone}`)
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('serverList');
+                    if (!data.success || !data.servers || data.servers.length === 0) {
+                        container.innerHTML = '<p class="no-server">No servers found. Purchase a plan below.</p>';
+                        return;
+                    }
+
+                    let html = '';
+                    data.servers.forEach(srv => {
+                        html += `
+                            <div class="server-item">
+                                <p><strong>Plan:</strong> ${srv.plan}</p>
+                                <p><strong>Server ID:</strong> ${srv.serverId}</p>
+                                <p><strong>Panel:</strong> <a href="${srv.panelUrl}" target="_blank" style="color: #2e86c1;">${srv.panelUrl}</a></p>
+                                <p><strong>Status:</strong> <span class="server-status">● ${srv.status || 'Active'}</span></p>
+                                <p><strong>Created:</strong> ${new Date(srv.createdAt).toLocaleDateString()}</p>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById('serverList').innerHTML = '<p class="no-server">Could not load servers. Try again later.</p>';
+                });
+        }
+
+        // ─── Init ───
         renderPlans();
+        loadUserServers();
+
+        // Store phone after purchase (from payment page)
+        const urlParams = new URLSearchParams(window.location.search);
+        const phoneParam = urlParams.get('phone');
+        if (phoneParam) {
+            localStorage.setItem('userPhone', phoneParam);
+        }
     </script>
 </body>
 </html>
