@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bighosting – Server Plans</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/matrix.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body>
+
+    <!-- Matrix Background -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="container">
+        <header class="header">
+            <h1>bighosting</h1>
+            <p class="tagline">Select Your Server Plan</p>
+        </header>
+
+        <!-- Plans Grid -->
+        <section class="plans">
+            <div class="plan-grid" id="planGrid"></div>
+        </section>
+
+        <div class="footer-info">
+            <p>Click a plan to select it, then proceed to payment.</p>
+            <p>Password will be revealed after purchase.</p>
+        </div>
+    </div>
+
+    <audio id="clickSound" src="/assets/audio/click.mp3" preload="auto"></audio>
+    <script src="/js/matrix.js"></script>
+    <script>
+        // ─── Plan Data with Colors ───
+        const plans = [
+            { id: 1, name: "2 GB", price: 1500, ram: "2GB", disk: "20GB", cpu: "100%", color: "#90A4AE", medal: "" },
+            { id: 2, name: "3 GB", price: 3000, ram: "3GB", disk: "30GB", cpu: "150%", color: "#78909C", medal: "" },
+            { id: 3, name: "4 GB", price: 4500, ram: "4GB", disk: "40GB", cpu: "150%", color: "#607D8B", medal: "" },
+            { id: 4, name: "5 GB", price: 6000, ram: "5GB", disk: "50GB", cpu: "200%", color: "#546E7A", medal: "" },
+            { id: 5, name: "6 GB", price: 7500, ram: "6GB", disk: "60GB", cpu: "200%", color: "#455A64", medal: "" },
+            { id: 6, name: "7 GB", price: 9000, ram: "7GB", disk: "70GB", cpu: "250%", color: "#37474F", medal: "" },
+            { id: 7, name: "8 GB", price: 10500, ram: "8GB", disk: "80GB", cpu: "250%", color: "#4DD0E1", medal: "" },
+            { id: 8, name: "9 GB", price: 12000, ram: "9GB", disk: "90GB", cpu: "300%", color: "#CD7F32", medal: "BRONZE" },
+            { id: 9, name: "10 GB", price: 13500, ram: "10GB", disk: "100GB", cpu: "300%", color: "#C0C0C0", medal: "SILVER" },
+            { id: 10, name: "UNLIMITED", price: 15000, ram: "16GB+", disk: "200GB+", cpu: "400%", color: "#FFD700", medal: "GOLD" }
+        ];
+
+        let selectedPlanId = null;
+
+        function renderPlans() {
+            const grid = document.getElementById('planGrid');
+            plans.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'plan-card';
+                card.dataset.id = p.id;
+                card.style.borderColor = p.color;
+                card.innerHTML = `
+                    <div class="plan-medal" style="color: ${p.color};">${p.medal || '#'}</div>
+                    <h3 style="color: ${p.color};">${p.name}</h3>
+                    <p>RAM: ${p.ram}</p>
+                    <p>DISK: ${p.disk}</p>
+                    <p>CPU: ${p.cpu}</p>
+                    <p class="price" style="color: ${p.color};">${p.price.toLocaleString()} TZS</p>
+                `;
+                card.onclick = () => selectPlan(p.id);
+                grid.appendChild(card);
+            });
+        }
+
+        function selectPlan(id) {
+            selectedPlanId = id;
+            document.querySelectorAll('.plan-card').forEach(el => {
+                el.classList.toggle('selected', parseInt(el.dataset.id) === id);
+            });
+            try {
+                document.getElementById('clickSound').play().catch(() => {});
+            } catch(e) {}
+            
+            // Store selected plan and redirect to payment
+            localStorage.setItem('selectedPlanId', id);
+            setTimeout(() => {
+                window.location.href = '/payment.html';
+            }, 400);
+        }
+
+        renderPlans();
+    </script>
+</body>
+</html>
