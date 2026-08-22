@@ -1,0 +1,136 @@
+
+---
+
+## 📁 File 8: `public/pages/about.html` (About bighosting)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About – bighosting</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body>
+    <!-- ─── Matrix Background ─── -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="container">
+        <!-- ─── Header ─── -->
+        <header class="header">
+            <h1>⫸ about bighosting ⫷</h1>
+            <p class="tagline">Empowering your server journey</p>
+        </header>
+
+        <!-- ─── About Content ─── -->
+        <div class="card about-card">
+            <h2>🚀 Who We Are</h2>
+            <p>
+                <strong>bighosting</strong> is a premium Pterodactyl server provider,
+                powered by <span class="highlight">BIGST4CK</span>.
+                We deliver high-performance, reliable, and affordable server hosting
+                for gamers, developers, and businesses.
+            </p>
+
+            <h2>💡 What We Offer</h2>
+            <ul>
+                <li>✅ <strong>Full Root Access</strong> – Complete control over your server</li>
+                <li>✅ <strong>24/7 Uptime</strong> – Reliable hosting with monitoring</li>
+                <li>✅ <strong>One-Click Apps</strong> – Minecraft, Discord bots, Node.js, and more</li>
+                <li>✅ <strong>Free SSL</strong> – Secure connections by default</li>
+                <li>✅ <strong>Instant Setup</strong> – Server ready in minutes</li>
+                <li>✅ <strong>Premium Support</strong> – We're here to help</li>
+            </ul>
+
+            <h2>🔒 Payment & Security</h2>
+            <p>
+                We use <strong>SonicPesa</strong> for secure mobile money payments.
+                Your data is encrypted and protected. You'll receive a USSD prompt
+                on your phone to authorize payments.
+            </p>
+
+            <h2>🌐 Our Partners</h2>
+            <div class="partners">
+                <span class="badge">🔷 SonicPesa</span>
+                <span class="badge">🔷 Pterodactyl</span>
+                <span class="badge">🔷 BIGST4CK</span>
+                <span class="badge">🔷 Render</span>
+            </div>
+
+            <h2>📞 Get in Touch</h2>
+            <p>
+                📱 <strong>WhatsApp:</strong> <a href="https://wa.me/255636756591" target="_blank">+255 636 756 591</a><br />
+                📧 <strong>Email:</strong> support@bighosting.com<br />
+                🌐 <strong>Website:</strong> <a href="https://bighosting.onrender.com" target="_blank">bighosting.onrender.com</a>
+            </p>
+
+            <div class="btn-group">
+                <a href="/" class="btn-buy" style="display: inline-block; text-decoration: none; text-align: center;">
+                    🏠 Back to Store
+                </a>
+            </div>
+        </div>
+
+        <!-- ─── Footer ─── -->
+        <footer class="footer">
+            <p>© 2026 bighosting · Powered by BIGST4CK</p>
+            <p class="tagline" style="color: #555; font-size: 0.8rem;">Your server, your rules.</p>
+        </footer>
+    </div>
+
+    <!-- ─── Scripts ─── -->
+    <script>
+        // ─── Matrix Rain ───
+        const matrixCanvas = document.getElementById('matrixCanvas');
+        const mctx = matrixCanvas.getContext('2d');
+        const symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$&£¢€¥π×∆✓°¢^~+{$$:#+#&$#(✓¢=%";
+        const chars = symbols.split('');
+        let drops = [];
+        const fontSize = 20;
+
+        function resizeMatrix() {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            const cols = Math.floor(matrixCanvas.width / fontSize);
+            drops = [];
+            for (let i = 0; i < cols; i++) drops[i] = Math.random() * -100;
+        }
+        resizeMatrix();
+        window.addEventListener('resize', resizeMatrix);
+
+        function drawMatrix() {
+            mctx.fillStyle = 'rgba(10, 10, 15, 0.04)';
+            mctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            mctx.font = `${fontSize}px 'Courier New', monospace`;
+            mctx.textAlign = 'center';
+
+            for (let i = 0; i < drops.length; i++) {
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                const x = i * fontSize + fontSize / 2;
+                const y = drops[i] * fontSize + fontSize / 2;
+                const rand = Math.random();
+                let r, g, b;
+                if (rand < 0.05) {
+                    r = 200; g = 30; b = 30; // Red accent
+                } else if (rand < 0.4) {
+                    r = 20; g = 60; b = 120; // Deep blue
+                } else {
+                    const grey = 120 + Math.random() * 80;
+                    r = grey; g = grey - 10; b = grey - 20; // Grey
+                }
+                const brightness = 0.6 + Math.random() * 0.4;
+                mctx.shadowColor = `rgba(26, 82, 118, ${0.3 * brightness})`;
+                mctx.shadowBlur = 15;
+                mctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.7 + 0.3 * brightness})`;
+                mctx.fillText(char, x, y);
+                mctx.shadowBlur = 0;
+                if (y > matrixCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+    </script>
+</body>
+</html>
