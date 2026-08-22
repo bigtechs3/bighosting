@@ -16,81 +16,123 @@
     <!-- ─── Main Container ─── -->
     <div class="container">
 
-        <!-- ─── Header ─── -->
-        <header class="header">
-            <h1>⫸ bighosting ⫷</h1>
-            <p class="tagline">Pterodactyl Servers · Powered by <span class="highlight">BIGST4CK</span></p>
-        </header>
-
-        <!-- ─── Plans Section ─── -->
-        <section class="plans" id="plansSection">
-            <h2>📦 Choose Your Server Plan</h2>
-            <div class="plan-grid" id="planGrid"></div>
-        </section>
-
-        <!-- ─── Order Form ─── -->
-        <div class="card" id="orderForm">
-            <h2>📱 Order Server</h2>
-            <p class="subtext">You'll receive a USSD prompt on your phone to complete payment.</p>
-
-            <form id="purchaseForm">
-                <div class="form-group">
-                    <label for="phone">📞 Phone Number</label>
-                    <input type="tel" id="phone" placeholder="e.g., 255XXXXXXXXX" required />
-                </div>
-                <div class="form-group">
-                    <label for="plan">📦 Server Plan</label>
-                    <select id="plan" required>
-                        <option value="">Select a plan...</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-buy">⚡ Purchase Server</button>
-            </form>
-
-            <div class="footer-info">
-                <p>📌 After payment, you'll receive login credentials and panel link.</p>
+        <!-- ─── SCREEN 1: GET STARTED ─── -->
+        <div id="screenStart" class="screen">
+            <div class="header">
+                <h1>⫸ bighosting ⫷</h1>
+                <p class="tagline">Pterodactyl Servers · Powered by <span class="highlight">BIGST4CK</span></p>
+            </div>
+            <div class="start-card">
+                <div class="server-icon">🖥️</div>
+                <h2>Welcome to bighosting</h2>
+                <p>High-performance Pterodactyl servers at affordable prices.</p>
+                <button class="btn-start" onclick="startJourney()">🚀 GET STARTED</button>
             </div>
         </div>
 
-        <!-- ─── Processing ─── -->
-        <div id="processing" class="card processing-card" style="display: none">
-            <div class="loader"></div>
-            <h2>⏳ Processing...</h2>
-            <p>Please check your phone for the USSD prompt.</p>
-            <p class="subtext">Authorize the payment to create your server.</p>
+        <!-- ─── SCREEN 2: LOADING ─── -->
+        <div id="screenLoading" class="screen" style="display: none">
+            <div class="loading-card">
+                <h2>⏳ Loading...</h2>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <p id="loadingText" class="loading-text">Initializing system...</p>
+            </div>
         </div>
 
-        <!-- ─── Success ─── -->
-        <div id="success" class="card success" style="display: none">
-            <div class="big-emoji">🎉✅🎉</div>
-            <h2>🎊 SERVER CREATED! 🎊</h2>
-            <div id="serverDetails" class="server-credentials">
-                <p><strong>🔑 Username:</strong> <span id="srvUser">-</span></p>
-                <p><strong>🔒 Password:</strong> <span id="srvPass">-</span></p>
-                <p><strong>🌐 Panel:</strong> <span id="srvPanel">-</span></p>
-                <a id="srvLink" href="#" target="_blank" class="btn-panel">🔗 Open Server Panel</a>
+        <!-- ─── SCREEN 3: PLANS ─── -->
+        <div id="screenPlans" class="screen" style="display: none">
+            <header class="header">
+                <h1>⫸ bighosting ⫷</h1>
+                <p class="tagline">Choose Your Server Plan</p>
+            </header>
+
+            <!-- ─── Welcome Message ─── -->
+            <div class="welcome-banner">
+                <h2>👋 Welcome, Server Seeker!</h2>
+                <p>Select a plan below to get started. All servers run on <strong>Node.js 20+</strong>.</p>
             </div>
-            <p class="large-text">Thank you for choosing <span class="highlight">bighosting</span>! 🙏</p>
-            <div class="shapes">
-                <span class="shape">@</span><span class="shape">#</span><span class="shape">$</span>
-                <span class="shape">&</span><span class="shape">£</span><span class="shape">¢</span>
-                <span class="shape">€</span><span class="shape">¥</span><span class="shape">π</span>
-                <span class="shape">×</span><span class="shape">∆</span><span class="shape">✓</span>
-                <span class="shape">°</span><span class="shape">^</span><span class="shape">~</span>
-                <span class="shape">+</span><span class="shape">{</span><span class="shape">$</span>
-                <span class="shape">$</span><span class="shape">:</span><span class="shape">#</span>
-                <span class="shape">+</span><span class="shape">#</span><span class="shape">&</span>
-                <span class="shape">$</span><span class="shape">#</span><span class="shape">(</span>
-                <span class="shape">✓</span><span class="shape">¢</span><span class="shape">=</span>
-                <span class="shape">%</span>
+
+            <!-- ─── Plans Grid ─── -->
+            <section class="plans">
+                <div class="plan-grid" id="planGrid"></div>
+            </section>
+
+            <!-- ─── Order Form ─── -->
+            <div class="card" id="orderForm">
+                <h2>📱 Order Server</h2>
+                <p class="subtext">Enter quantity and phone number to proceed.</p>
+
+                <form id="purchaseForm">
+                    <div class="form-group">
+                        <label for="phone">📞 Phone Number</label>
+                        <input type="tel" id="phone" placeholder="e.g., 255XXXXXXXXX" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">🔢 Quantity</label>
+                        <input type="number" id="quantity" placeholder="Enter number of servers" min="1" value="1" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="planSelect">📦 Server Plan</label>
+                        <select id="planSelect" required>
+                            <option value="">Select a plan...</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-buy">⚡ Purchase Server</button>
+                </form>
+
+                <div class="footer-info">
+                    <p>📌 After payment, you'll receive login credentials and panel link.</p>
+                    <p>🔒 <strong>Password:</strong> <code style="color: #e74c3c;">@datmanj@9</code> (constant)</p>
+                </div>
             </div>
-            <div class="big-brand"><h1>bighosting</h1></div>
-            <button class="btn-return" onclick="resetPurchase()">🔄 Buy Another Server</button>
+        </div>
+
+        <!-- ─── SCREEN 4: PROCESSING ─── -->
+        <div id="screenProcessing" class="screen" style="display: none">
+            <div class="card processing-card">
+                <div class="loader"></div>
+                <h2>⏳ Processing...</h2>
+                <p>Please check your phone for the USSD prompt.</p>
+                <p class="subtext">Authorize the payment to create your server.</p>
+            </div>
+        </div>
+
+        <!-- ─── SCREEN 5: SUCCESS ─── -->
+        <div id="screenSuccess" class="screen" style="display: none">
+            <div class="card success">
+                <div class="big-emoji">🎉✅🎉</div>
+                <h2>🎊 SERVER CREATED! 🎊</h2>
+                <div id="serverDetails" class="server-credentials">
+                    <p><strong>👤 Username:</strong> <span id="srvUser">-</span></p>
+                    <p><strong>🔒 Password:</strong> <span id="srvPass">-</span></p>
+                    <p><strong>📧 Email:</strong> <span id="srvEmail">-</span></p>
+                    <p><strong>🌐 Panel:</strong> <span id="srvPanel">-</span></p>
+                    <a id="srvLink" href="#" target="_blank" class="btn-panel">🔗 Open Server Panel</a>
+                </div>
+                <p class="large-text">Thank you for choosing <span class="highlight">bighosting</span>! 🙏</p>
+                <div class="shapes">
+                    <span class="shape">@</span><span class="shape">#</span><span class="shape">$</span>
+                    <span class="shape">&</span><span class="shape">£</span><span class="shape">¢</span>
+                    <span class="shape">€</span><span class="shape">¥</span><span class="shape">π</span>
+                    <span class="shape">×</span><span class="shape">∆</span><span class="shape">✓</span>
+                    <span class="shape">°</span><span class="shape">^</span><span class="shape">~</span>
+                    <span class="shape">+</span><span class="shape">{</span><span class="shape">$</span>
+                    <span class="shape">$</span><span class="shape">:</span><span class="shape">#</span>
+                    <span class="shape">+</span><span class="shape">#</span><span class="shape">&</span>
+                    <span class="shape">$</span><span class="shape">#</span><span class="shape">(</span>
+                    <span class="shape">✓</span><span class="shape">¢</span><span class="shape">=</span>
+                    <span class="shape">%</span>
+                </div>
+                <div class="big-brand"><h1>bighosting</h1></div>
+                <button class="btn-return" onclick="resetPurchase()">🔄 Buy Another Server</button>
+            </div>
         </div>
 
         <!-- ─── Footer ─── -->
-        <footer class="footer" style="text-align: center; margin-top: 30px; padding: 20px; border-top: 1px solid #1a2a3a;">
+        <footer class="footer" style="text-align: center; margin-top: 30px; padding: 20px; border-top: 1px solid #1a2a3a; display: none;" id="mainFooter">
             <p style="color: #555; font-size: 0.8rem;">© 2026 bighosting · Powered by BIGST4CK</p>
             <p style="color: #444; font-size: 0.7rem;">Your server, your rules.</p>
         </footer>
