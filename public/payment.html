@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Matrix Background -->
     <canvas id="matrixCanvas"></canvas>
 
     <div class="container">
@@ -48,11 +47,11 @@
         </div>
 
         <!-- Processing -->
-        <div id="processing" class="card processing-card" style="display: none">
+        <div id="processing" class="card" style="display: none">
             <div class="loader"></div>
-            <h2>PROCESSING...</h2>
-            <p>Please check your phone for the USSD prompt.</p>
-            <p class="subtext">Authorize the payment to create your server.</p>
+            <h2 style="text-align: center;">PROCESSING...</h2>
+            <p style="text-align: center;">Please check your phone for the USSD prompt.</p>
+            <p style="text-align: center; color: #666666;">Authorize the payment to create your server.</p>
         </div>
     </div>
 
@@ -60,7 +59,6 @@
     <audio id="successSound" src="/assets/audio/success.mp3" preload="auto"></audio>
     <script src="/js/matrix.js"></script>
     <script>
-        // ─── Get selected plan from localStorage ───
         const planId = localStorage.getItem('selectedPlanId');
         const plans = [
             { id: 1, name: "2 GB", price: 1500 },
@@ -76,14 +74,11 @@
         ];
 
         const selectedPlan = plans.find(p => p.id == planId);
-        if (!selectedPlan) {
-            window.location.href = '/plans.html';
-        }
+        if (!selectedPlan) { window.location.href = '/plans.html'; }
 
         document.getElementById('selectedPlanDisplay').textContent = 
             `${selectedPlan.name} – ${selectedPlan.price.toLocaleString()} TZS each`;
 
-        // ─── Form Submission ───
         const form = document.getElementById('purchaseForm');
         const paymentForm = document.getElementById('paymentForm');
         const processing = document.getElementById('processing');
@@ -94,20 +89,12 @@
             const phone = document.getElementById('phone').value.trim();
             const quantity = parseInt(document.getElementById('quantity').value) || 1;
 
-            if (!phone) {
-                alert('Please enter your phone number');
-                return;
-            }
-
+            if (!phone) { alert('Please enter your phone number'); return; }
             if (!/^255[0-9]{9}$/.test(phone)) {
                 alert('Enter a valid Tanzania number (e.g., 255XXXXXXXXX)');
                 return;
             }
-
-            if (quantity < 1) {
-                alert('Quantity must be at least 1');
-                return;
-            }
+            if (quantity < 1) { alert('Quantity must be at least 1'); return; }
 
             const totalPrice = selectedPlan.price * quantity;
 
@@ -118,18 +105,12 @@
                 const res = await fetch('/api/purchase', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        phone,
-                        planId: selectedPlan.id,
-                        quantity,
-                        totalPrice
-                    })
+                    body: JSON.stringify({ phone, planId: selectedPlan.id, quantity, totalPrice })
                 });
 
                 const data = await res.json();
                 if (!data.success) throw new Error(data.message || 'Purchase failed');
 
-                // Store credentials in localStorage for success page
                 localStorage.setItem('serverUsername', data.credentials.username);
                 localStorage.setItem('serverPassword', data.credentials.password);
                 localStorage.setItem('serverEmail', data.credentials.email);
@@ -137,12 +118,7 @@
                 localStorage.setItem('serverId', data.credentials.serverId);
                 localStorage.setItem('totalServers', data.credentials.totalServers || quantity);
 
-                // Play success sound
-                try {
-                    document.getElementById('successSound').play().catch(() => {});
-                } catch(e) {}
-
-                // Redirect to success page
+                try { document.getElementById('successSound').play().catch(() => {}); } catch(e) {}
                 window.location.href = '/success.html';
 
             } catch (err) {
