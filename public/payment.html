@@ -46,7 +46,6 @@
             </div>
         </div>
 
-        <!-- Processing -->
         <div id="processing" class="card" style="display: none">
             <div class="loader"></div>
             <h2 style="text-align: center;">PROCESSING...</h2>
@@ -111,6 +110,7 @@
                 const data = await res.json();
                 if (!data.success) throw new Error(data.message || 'Purchase failed');
 
+                localStorage.setItem('userPhone', phone);
                 localStorage.setItem('serverUsername', data.credentials.username);
                 localStorage.setItem('serverPassword', data.credentials.password);
                 localStorage.setItem('serverEmail', data.credentials.email);
