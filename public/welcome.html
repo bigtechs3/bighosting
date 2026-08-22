@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bighosting – Welcome</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/matrix.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body>
+
+    <!-- Matrix Background -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <div class="container">
+        <div class="welcome-card">
+            <div class="welcome-icon">⫸⫷</div>
+            <h1>WELCOME</h1>
+            <p class="tagline">to bighosting</p>
+            <p class="desc">Choose your server plan below to get started.</p>
+            <p class="desc">All servers run on <strong>Node.js 20+</strong> with full root access.</p>
+            <button class="btn-start" onclick="goToPlans()">VIEW PLANS</button>
+        </div>
+    </div>
+
+    <audio id="clickSound" src="/assets/audio/click.mp3" preload="auto"></audio>
+    <audio id="successSound" src="/assets/audio/success.mp3" preload="auto"></audio>
+    <script src="/js/matrix.js"></script>
+    <script>
+        // Play success sound on welcome
+        setTimeout(() => {
+            try {
+                document.getElementById('successSound').play().catch(() => {});
+            } catch(e) {}
+        }, 300);
+
+        function goToPlans() {
+            try {
+                document.getElementById('clickSound').play().catch(() => {});
+            } catch(e) {}
+            window.location.href = '/plans.html';
+        }
+    </script>
+</body>
+</html>
