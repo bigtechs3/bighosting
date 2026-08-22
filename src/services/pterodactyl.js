@@ -2,7 +2,6 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-// ─── Load Environment ───
 const PTERO_API_KEY = process.env.PTERO_API_KEY;
 const PTERO_PANEL = process.env.PTERO_PANEL;
 const PTERO_EGG = parseInt(process.env.PTERO_EGG) || 15;
@@ -11,14 +10,12 @@ const PTERO_NEST = parseInt(process.env.PTERO_NEST) || 5;
 
 const CONSTANT_PASSWORD = "@datmanj@9";
 
-// ─── Headers ───
 const headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${PTERO_API_KEY}`
 };
 
-// ─── Create User ───
 async function createUser(username, email) {
     try {
         const response = await axios.post(
@@ -47,7 +44,6 @@ async function createUser(username, email) {
     }
 }
 
-// ─── Create Server ───
 async function createServer(userId, plan, serverName, description) {
     try {
         const response = await axios.post(
@@ -101,7 +97,6 @@ async function createServer(userId, plan, serverName, description) {
     }
 }
 
-// ─── Get Allocations ───
 async function getAllocations(serverId) {
     try {
         const response = await axios.get(
@@ -121,40 +116,34 @@ async function getAllocations(serverId) {
     }
 }
 
-// ─── Save Server to Database ───
 function saveServerToDb(serverData) {
     const dbPath = path.join(__dirname, '../../database/servers.json');
     let servers = [];
     if (fs.existsSync(dbPath)) {
-        try {
-            servers = JSON.parse(fs.readFileSync(dbPath));
-        } catch (_) {}
+        try { servers = JSON.parse(fs.readFileSync(dbPath)); } catch (_) {}
     }
     servers.push({
         serverId: serverData.serverId,
         plan: serverData.plan,
         username: serverData.username,
         password: CONSTANT_PASSWORD,
-        panelUrl: `${PTERO_PANEL}/server/${serverData.serverId}`,
+        phone: serverData.phone || 'N/A',
+        panelUrl: serverData.panelUrl || `${PTERO_PANEL}/server/${serverData.serverId}`,
         ip: serverData.ip || 'N/A',
         port: serverData.port || 'N/A',
-        createdAt: new Date().toISOString(),
-        status: 'active'
+        createdAt: serverData.createdAt || new Date().toISOString(),
+        status: serverData.status || 'active'
     });
     fs.writeFileSync(dbPath, JSON.stringify(servers, null, 2));
     return servers;
 }
 
-// ─── Save User to Database ───
 function saveUserToDb(userData) {
     const dbPath = path.join(__dirname, '../../database/users.json');
     let users = [];
     if (fs.existsSync(dbPath)) {
-        try {
-            users = JSON.parse(fs.readFileSync(dbPath));
-        } catch (_) {}
+        try { users = JSON.parse(fs.readFileSync(dbPath)); } catch (_) {}
     }
-    // Check if user already exists
     const existing = users.find(u => u.phone === userData.phone);
     if (existing) {
         existing.purchases = existing.purchases || [];
