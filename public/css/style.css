@@ -1,0 +1,311 @@
+/* ─── RESET ─── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #0a0a0f;
+    min-height: 100vh;
+    padding: 20px;
+    color: #c0c0c0;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ─── MATRIX RAIN ─── */
+#matrixCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ─── CONTAINER ─── */
+.container {
+    max-width: 960px;
+    width: 100%;
+    margin: 0 auto;
+    z-index: 10;
+    position: relative;
+}
+
+/* ─── HEADER ─── */
+.header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.header h1 {
+    font-size: 3.2rem;
+    color: #1a5276;
+    text-shadow: 0 0 20px rgba(26, 82, 118, 0.6), 0 0 60px rgba(26, 82, 118, 0.3);
+    letter-spacing: 8px;
+    font-weight: 700;
+}
+
+.header .tagline {
+    color: #888;
+    font-size: 1.1rem;
+    margin-top: 6px;
+}
+
+.header .highlight {
+    color: #e74c3c;
+    text-shadow: 0 0 15px rgba(231, 76, 60, 0.3);
+}
+
+/* ─── PLANS ─── */
+.plans {
+    margin-bottom: 30px;
+}
+
+.plans h2 {
+    color: #1a5276;
+    text-shadow: 0 0 15px rgba(26, 82, 118, 0.3);
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+}
+
+.plan-card {
+    background: rgba(10, 10, 15, 0.9);
+    border: 1px solid rgba(26, 82, 118, 0.25);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.plan-card:hover {
+    border-color: #1a5276;
+    box-shadow: 0 0 30px rgba(26, 82, 118, 0.15);
+    transform: translateY(-3px);
+}
+
+.plan-card.selected {
+    border-color: #e74c3c;
+    box-shadow: 0 0 40px rgba(231, 76, 60, 0.2);
+    background: rgba(231, 76, 60, 0.05);
+}
+
+.plan-card h3 {
+    color: #2e86c1;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.plan-card p {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.plan-card .price {
+    color: #e74c3c;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* ─── CARD ─── */
+.card {
+    background: rgba(10, 10, 15, 0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px 28px;
+    border: 1px solid rgba(26, 82, 118, 0.15);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+    color: #2e86c1;
+    text-shadow: 0 0 15px rgba(26, 82, 118, 0.3);
+    margin-bottom: 6px;
+}
+
+.card .subtext {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* ─── FORM ─── */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #2e86c1;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #1a2a3a;
+    background: rgba(0, 0, 0, 0.7);
+    color: #ddd;
+    font-size: 1rem;
+    outline: none;
+    font-family: 'Courier New', monospace;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #1a5276;
+    box-shadow: 0 0 20px rgba(26, 82, 118, 0.15);
+}
+
+.form-group select option {
+    background: #0a0a0f;
+    color: #ddd;
+}
+
+.btn-buy {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 2px solid #e74c3c;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #e74c3c;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+}
+
+.btn-buy:hover {
+    background: rgba(231, 76, 60, 0.08);
+    box-shadow: 0 0 50px rgba(231, 76, 60, 0.15);
+}
+
+/* ─── BUTTONS ─── */
+.btn-return {
+    padding: 12px 30px;
+    background: transparent;
+    border: 2px solid #2e86c1;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2e86c1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    font-family: 'Courier New', monospace;
+}
+
+.btn-return:hover {
+    background: rgba(46, 134, 193, 0.08);
+    box-shadow: 0 0 30px rgba(46, 134, 193, 0.1);
+}
+
+.btn-panel {
+    display: inline-block;
+    padding: 12px 25px;
+    background: transparent;
+    border: 2px solid #1a5276;
+    border-radius: 10px;
+    color: #2e86c1;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+}
+
+.btn-panel:hover {
+    background: rgba(26, 82, 118, 0.1);
+    box-shadow: 0 0 30px rgba(26, 82, 118, 0.15);
+}
+
+.footer-info {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #1a2a3a;
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+}
+
+/* ─── PROCESSING ─── */
+.processing-card .loader {
+    width: 50px;
+    height: 50px;
+    margin: 20px auto;
+    border: 3px solid #1a2a3a;
+    border-top: 3px solid #2e86c1;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.processing-card h2 { text-align: center; color: #2e86c1; }
+.processing-card p { text-align: center; color: #777; }
+
+/* ─── SUCCESS ─── */
+.success {
+    background: rgba(0, 5, 10, 0.95);
+    border: 2px solid #1a5276;
+    text-align: center;
+}
+
+.big-emoji { font-size: 3.5rem; margin-bottom: 10px; }
+.success h2 { font-size: 2rem; color: #e74c3c; }
+.success .large-text { font-size: 1.2rem; color: #ccc; margin: 8px 0; }
+
+.server-credentials {
+    background: rgba(26, 82, 118, 0.05);
+    border-radius: 12px;
+    padding: 15px;
+    margin: 15px 0;
+    border: 1px solid rgba(26, 82, 118, 0.15);
+}
+
+.server-credentials p {
+    color: #ccc;
+    margin: 6px 0;
+    font-size: 0.95rem;
+}
+
+.server-credentials strong { color: #2e86c1; }
+.server-credentials span { color: #ddd; }
+
+.big-brand h1 {
+    font-size: 3rem;
+    color: #1a5276;
+    margin: 10px 0;
+    letter-spacing: 12px;
+    text-shadow: 0 0 40px rgba(26, 82, 118, 0.3);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 600px) {
+    .header h1 { font-size: 2.2rem; letter-spacing: 4px; }
+    .plan-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+    .card { padding: 20px 16px; }
+    .big-brand h1 { font-size: 2.2rem; }
+}
